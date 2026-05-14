@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohit Thakur — Portfolio 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #3B6EE8;
+    --blue-light: #5B88FF;
+    --white: #F4F6FD;
+    --dark: #0D0E14;
+    --gray: #8892A4;
+    --card-bg: #181926;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--blue);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--blue-light);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.18s ease, opacity 0.2s;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 48px;
+    background: rgba(13,14,20,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(59,110,232,0.12);
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 0.08em;
+    color: var(--blue);
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    pointer-events: none;
+  }
+  .hero-bg .shape {
+    position: absolute;
+    background: var(--blue);
+  }
+  .hero-bg .tl {
+    top: 0; left: 0;
+    width: 200px; height: 180px;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    opacity: 0.85;
+  }
+  .hero-bg .tr {
+    top: 0; right: 0;
+    width: 160px; height: 140px;
+    clip-path: polygon(100% 0, 100% 100%, 0 0);
+    opacity: 0.85;
+  }
+  .hero-bg .br {
+    bottom: 0; right: 0;
+    width: 140px; height: 120px;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    opacity: 0.85;
+  }
+  .hero-bg .line1 {
+    top: 30px; left: 180px;
+    width: 260px; height: 2px;
+    transform: rotate(-30deg);
+    opacity: 0.3;
+  }
+  .hero-bg .line2 {
+    top: 80px; left: 240px;
+    width: 200px; height: 1.5px;
+    transform: rotate(-30deg);
+    opacity: 0.18;
+  }
+
+  .hero-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(5rem, 14vw, 12rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.35s forwards;
+  }
+  .hero-title span { color: var(--blue); }
+
+  .hero-sub {
+    margin-top: 36px;
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.55s forwards;
+  }
+  .hero-desc {
+    max-width: 420px;
+    font-size: 0.82rem;
+    line-height: 1.85;
+    color: var(--gray);
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 280px;
+  }
+  .tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1.5px solid rgba(59,110,232,0.4);
+    color: var(--blue-light);
+    transition: background 0.2s, color 0.2s;
+  }
+  .tag:hover { background: var(--blue); color: #fff; }
+
+  .hero-cta {
+    margin-top: 56px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.75s forwards;
+  }
+  .btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    background: var(--blue);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn:hover { background: var(--blue-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--blue);
+    color: var(--blue-light);
+    margin-left: 16px;
+  }
+  .btn-outline:hover { background: var(--blue); color: #fff; }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    opacity: 0.25;
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 48px; }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 60px;
+  }
+
+  /* SKILLS */
+  #skills { background: #11121C; }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .skill-card {
+    background: var(--card-bg);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--blue);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s ease;
+  }
+  .skill-card:hover { background: #1E2035; }
+  .skill-card:hover::before { transform: scaleY(1); }
+  .skill-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 3.5rem;
+    color: rgba(59,110,232,0.12);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .skill-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .skill-tools {
+    font-size: 0.72rem;
+    color: var(--gray);
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+  }
+
+  /* WORKS */
+  #works { background: var(--dark); }
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .work-card {
+    background: var(--card-bg);
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    display: flex;
+    align-items: flex-end;
+    padding: 28px;
+    transition: transform 0.25s;
+  }
+  .work-card:hover { transform: translateY(-4px); }
+  .work-card .work-bg {
+    position: absolute; inset: 0;
+    opacity: 0.12;
+    transition: opacity 0.3s;
+  }
+  .work-card:hover .work-bg { opacity: 0.2; }
+  .work-info { position: relative; z-index: 1; }
+  .work-cat {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 8px;
+  }
+  .work-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  /* work bg patterns */
+  .bg-grid {
+    background-image: linear-gradient(rgba(59,110,232,0.3) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(59,110,232,0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .bg-diag {
+    background: repeating-linear-gradient(
+      45deg, var(--blue) 0px, var(--blue) 2px, transparent 2px, transparent 32px
+    );
+  }
+  .bg-dots {
+    background-image: radial-gradient(circle, var(--blue-light) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+  }
+  .bg-hex {
+    background:
+      linear-gradient(60deg, var(--blue) 25%, transparent 25%) -20px 0,
+      linear-gradient(120deg, var(--blue) 25%, transparent 25%) -20px 0,
+      linear-gradient(300deg, var(--blue) 25%, transparent 25%),
+      linear-gradient(240deg, var(--blue) 25%, transparent 25%);
+    background-color: var(--card-bg);
+    background-size: 40px 70px;
+  }
+
+  /* ABOUT */
+  #about {
+    background: #11121C;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .about-text { }
+  .about-attrs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 36px;
+  }
+  .attr {
+    padding: 20px;
+    border: 1px solid rgba(59,110,232,0.2);
+    background: rgba(59,110,232,0.04);
+  }
+  .attr-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 6px;
+  }
+  .attr-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--blue-light);
+  }
+  .about-right { }
+  .capability-list { list-style: none; }
+  .capability-list li {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba(244,246,253,0.12);
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(59,110,232,0.1);
+    transition: color 0.2s;
+    cursor: default;
+  }
+  .capability-list li:hover { color: var(--white); }
+
+  /* CONTACT */
+  #contact {
+    background: var(--dark);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-bg {
+    position: absolute; inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .contact-ghost {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20vw;
+    text-transform: uppercase;
+    color: rgba(59,110,232,0.04);
+    letter-spacing: -0.02em;
+    user-select: none;
+  }
+  .contact-inner { position: relative; z-index: 1; }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 48px;
+  }
+  .contact-link {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .contact-link:hover { color: var(--blue-light); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(59,110,232,0.12);
+    padding: 28px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--blue); }
+
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { gap: 20px; }
+    section { padding: 70px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-sub { flex-direction: column; gap: 24px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .works-grid { grid-template-columns: 1fr; }
+    #about { grid-template-columns: 1fr; gap: 40px; }
+    footer { flex-direction: column; gap: 10px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MT</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="shape tl"></div>
+    <div class="shape tr"></div>
+    <div class="shape br"></div>
+    <div class="shape line1"></div>
+    <div class="shape line2"></div>
+  </div>
+  <p class="hero-tag">Portfolio 2026 · Kangra, India</p>
+  <h1 class="hero-title">Mohit<br><span>Thakur</span></h1>
+  <div class="hero-sub">
+    <p class="hero-desc">Designer & developer turning ideas into reality through code and visual storytelling. Building interfaces, animating ideas, engineering solutions.</p>
+    <div class="hero-tags">
+      <span class="tag">Graphic Design</span>
+      <span class="tag">Java Dev</span>
+      <span class="tag">Motion</span>
+      <span class="tag">UI/UX</span>
+      <span class="tag">Python</span>
+      <span class="tag">Animation</span>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <a href="#works" class="btn">View Works</a>
+    <a href="#contact" class="btn btn-outline">Get in Touch</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label reveal">What I bring</p>
+  <h2 class="section-title reveal">Skills &<br>Tools</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-num">01</div>
+      <div class="skill-name">Graphic Design</div>
+      <div class="skill-tools">Figma · Canva · Photoshop<br>Branding · UI Design · Layouts<br>Typography · Visual Identity</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-num">02</div>
+      <div class="skill-name">Java Development</div>
+      <div class="skill-tools">Java · OOP · Data Structures<br>Algorithms · Problem Solving<br>VS Code · Git / GitHub</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-num">03</div>
+      <div class="skill-name">Motion & Video</div>
+      <div class="skill-tools">After Effects · Animation<br>Motion Graphics · Editing<br>Visual Effects · Compositing</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-num">04</div>
+      <div class="skill-name">Python & Automation</div>
+      <div class="skill-tools">Python · Scripting · Automation<br>AI Tools · Problem Solving<br>Creative Coding</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-num">05</div>
+      <div class="skill-name">UI Engineering</div>
+      <div class="skill-tools">Interface Building · Prototyping<br>Component Design · User Flows<br>Interaction Design</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-num">06</div>
+      <div class="skill-name">Creative Thinking</div>
+      <div class="skill-tools">Experimentation · Innovation<br>Debugging · Optimization<br>Concept to Execution</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS -->
+<section id="works">
+  <p class="section-label reveal">Selected projects</p>
+  <h2 class="section-title reveal">Works</h2>
+  <div class="works-grid">
+    <div class="work-card reveal">
+      <div class="work-bg bg-grid"></div>
+      <div class="work-info">
+        <p class="work-cat">Graphic Design</p>
+        <h3 class="work-title">Portfolio 2026 —<br>Brand System</h3>
+      </div>
+    </div>
+    <div class="work-card reveal">
+      <div class="work-bg bg-diag"></div>
+      <div class="work-info">
+        <p class="work-cat">Java Development</p>
+        <h3 class="work-title">Data Structure<br>Visualizer</h3>
+      </div>
+    </div>
+    <div class="work-card reveal">
+      <div class="work-bg bg-dots"></div>
+      <div class="work-info">
+        <p class="work-cat">Motion Design</p>
+        <h3 class="work-title">Animated UI<br>System</h3>
+      </div>
+    </div>
+    <div class="work-card reveal">
+      <div class="work-bg bg-hex"></div>
+      <div class="work-info">
+        <p class="work-cat">Python / Automation</p>
+        <h3 class="work-title">Creative<br>Automation Tool</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text">
+    <p class="section-label reveal">Who I am</p>
+    <h2 class="section-title reveal" style="margin-bottom:24px">About<br>Me</h2>
+    <p class="reveal" style="color:var(--gray);font-size:0.82rem;line-height:1.9;max-width:420px">
+      I'm Mohit Thakur from Kangra — a designer and developer passionate about turning ideas into reality through design and code. I enjoy building creative, meaningful experiences that blend imagination, technology, and problem-solving.
+    </p>
+    <div class="about-attrs reveal">
+      <div class="attr">
+        <div class="attr-label">Location</div>
+        <div class="attr-val">Kangra, India</div>
+      </div>
+      <div class="attr">
+        <div class="attr-label">Focus</div>
+        <div class="attr-val">Design + Dev</div>
+      </div>
+      <div class="attr">
+        <div class="attr-label">GitHub</div>
+        <div class="attr-val">MT-Pseudo</div>
+      </div>
+      <div class="attr">
+        <div class="attr-label">Available</div>
+        <div class="attr-val">Open to Work</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-right reveal">
+    <ul class="capability-list">
+      <li>Creativity</li>
+      <li>Animation</li>
+      <li>Automation</li>
+      <li>Innovation</li>
+      <li>Debugging</li>
+      <li>Logic</li>
+      <li>Engineering</li>
+      <li>Optimization</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-bg">
+    <div class="contact-ghost">Contact</div>
+  </div>
+  <div class="contact-inner">
+    <p class="section-label reveal">Let's work together</p>
+    <h2 class="section-title reveal" style="margin-bottom:0">Get In<br>Touch</h2>
+    <div class="contact-links reveal">
+      <a href="mailto:mthakur09t@gmail.com" class="contact-link">mthakur09t@gmail.com</a>
+      <a href="https://github.com/MT-Pseudo" target="_blank" class="contact-link">github.com/MT-Pseudo</a>
+    </div>
+    <div class="reveal" style="margin-top:48px">
+      <a href="mailto:mthakur09t@gmail.com" class="btn">Send a Message</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Mohit Thakur</span>
+  <span>Graphic Design · Java Development · Motion</span>
+  <span>Kangra, India</span>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
